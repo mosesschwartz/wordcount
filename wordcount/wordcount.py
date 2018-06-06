@@ -53,7 +53,3 @@ class WordCount(Resource):
         word_counts = count_words(words, strip_chars)
         total_count = sum(word_counts.values())
         return {"total_count": total_count, "by_word": word_counts}
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
