@@ -8,5 +8,5 @@ setup(name='wordcount',
       author_email='moses.schwartz@gmail.com',
       license='MIT',
       packages=['wordcount'],
-      install_requires=['flask', 'flask-restplus'],
+      install_requires=['Flask', 'flask-restplus'],
       zip_safe=False)
