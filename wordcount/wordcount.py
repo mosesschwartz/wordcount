@@ -1,12 +1,25 @@
-from flask import Flask
+from flask import Flask, url_for
 from flask_restplus import Resource, Api, fields
 from collections import Counter
 import string
 
-description = """Count words in text."""
-
 app = Flask(__name__)
-api = Api(app, description=description, version="1.0", title="WordCount")
+
+class WrappedAPI(Api):
+    """This class wraps the flask_restplus API class in order to change the 
+    behavior of the specs_url method. When _external=True, it tries to load
+    swagger.json over HTTP.
+    more info: https://github.com/noirbizarre/flask-restplus/issues/223"""
+    @property
+    def specs_url(self):
+        '''
+        The Swagger specifications absolute url (ie. `swagger.json`)
+
+        :rtype: str
+        '''
+        return url_for(self.endpoint('specs'), _external=False)
+
+api = WrappedAPI(app, description="Count words in text.", version="1.0", title="WordCount")
 
 wordcount_input = api.model(
     "Resource",
@@ -52,4 +65,4 @@ class WordCount(Resource):
             strip_chars = api.payload["strip_chars"]
         word_counts = count_words(words, strip_chars)
         total_count = sum(word_counts.values())
-        return {"total_count": total_count, "by_word": word_counts}
+        return {"count": total_count, "words": word_counts}
