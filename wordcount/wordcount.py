@@ -5,21 +5,26 @@ import string
 
 app = Flask(__name__)
 
+
 class WrappedAPI(Api):
     """This class wraps the flask_restplus API class in order to change the 
     behavior of the specs_url method. When _external=True, it tries to load
     swagger.json over HTTP.
     more info: https://github.com/noirbizarre/flask-restplus/issues/223"""
+
     @property
     def specs_url(self):
-        '''
+        """
         The Swagger specifications absolute url (ie. `swagger.json`)
 
         :rtype: str
-        '''
-        return url_for(self.endpoint('specs'), _external=False)
+        """
+        return url_for(self.endpoint("specs"), _external=False)
 
-api = WrappedAPI(app, description="Count words in text.", version="1.0", title="WordCount")
+
+api = WrappedAPI(
+    app, description="Count words in text.", version="1.0", title="WordCount"
+)
 
 wordcount_input = api.model(
     "Resource",
