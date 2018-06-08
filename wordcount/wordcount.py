@@ -57,7 +57,7 @@ def count_words(words, strip_chars=None, word_delimiter=" ", make_lower=True):
 
 @api.route("/wordcount")
 class WordCount(Resource):
-    @api.expect(wordcount_input)
+    @api.expect(wordcount_input, validate=True)
     def post(self):
         """Accepts text and returns the total count of words and a 
         case-insensitive count of the occurrence of each word in the text. 
